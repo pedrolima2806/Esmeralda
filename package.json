@@ -1,0 +1,21 @@
+{
+  "name": "esmeralda",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@esmeralda/web",
+    "build": "npm run build --workspace=@esmeralda/web",
+    "lint": "npm run lint --workspace=@esmeralda/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:generate": "npm run generate --workspace=@esmeralda/database",
+    "db:migrate": "npm run migrate:dev --workspace=@esmeralda/database",
+    "db:studio": "npm run studio --workspace=@esmeralda/database"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

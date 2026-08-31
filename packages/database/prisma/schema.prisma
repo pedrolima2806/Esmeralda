@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum ReportStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model DataSource {
+  id             String            @id @default(uuid()) @db.Uuid
+  name           String            @unique
+  description    String?
+  baseUrl        String?           @map("base_url")
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @updatedAt @map("updated_at")
+  timeSeries     TimeSeries[]
+  collectionRuns CollectionRun[]
+
+  @@map("data_sources")
+}
+
+model EconomicIndicator {
+  id          String       @id @default(uuid()) @db.Uuid
+  code        String       @unique
+  name        String
+  description String?
+  unit        String
+  frequency   String
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  timeSeries  TimeSeries[]
+
+  @@map("economic_indicators")
+}
+
+model TimeSeries {
+  id          String             @id @default(uuid()) @db.Uuid
+  externalKey String             @map("external_key")
+  name        String
+  sourceId    String             @map("source_id") @db.Uuid
+  indicatorId String?            @map("indicator_id") @db.Uuid
+  metadata    Json?
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+  source      DataSource         @relation(fields: [sourceId], references: [id])
+  indicator   EconomicIndicator? @relation(fields: [indicatorId], references: [id])
+  observations Observation[]
+
+  @@unique([sourceId, externalKey])
+  @@index([indicatorId])
+  @@map("time_series")
+}
+
+model Observation {
+  id            String     @id @default(uuid()) @db.Uuid
+  timeSeriesId  String     @map("time_series_id") @db.Uuid
+  referenceDate DateTime   @map("reference_date") @db.Date
+  value         Decimal    @db.Decimal(24, 8)
+  collectedAt   DateTime   @default(now()) @map("collected_at")
+  revision      Int        @default(1)
+  metadata      Json?
+  timeSeries    TimeSeries @relation(fields: [timeSeriesId], references: [id], onDelete: Cascade)
+
+  @@unique([timeSeriesId, referenceDate, revision])
+  @@index([referenceDate])
+  @@map("observations")
+}
+
+model Report {
+  id          String          @id @default(uuid()) @db.Uuid
+  slug        String          @unique
+  title       String
+  summary     String?
+  status      ReportStatus    @default(DRAFT)
+  publishedAt DateTime?       @map("published_at")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  sections    ReportSection[]
+
+  @@map("reports")
+}
+
+model ReportSection {
+  id        String   @id @default(uuid()) @db.Uuid
+  reportId  String   @map("report_id") @db.Uuid
+  position  Int
+  title     String?
+  content   Json
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@unique([reportId, position])
+  @@map("report_sections")
+}
+
+model CollectionRun {
+  id          String     @id @default(uuid()) @db.Uuid
+  sourceId    String     @map("source_id") @db.Uuid
+  status      JobStatus  @default(PENDING)
+  startedAt   DateTime?  @map("started_at")
+  finishedAt  DateTime?  @map("finished_at")
+  recordsRead Int        @default(0) @map("records_read")
+  recordsSaved Int       @default(0) @map("records_saved")
+  errorMessage String?   @map("error_message")
+  metadata    Json?
+  source      DataSource @relation(fields: [sourceId], references: [id])
+
+  @@index([sourceId, status])
+  @@map("collection_runs")
+}
+
+model ProcessingJob {
+  id           String    @id @default(uuid()) @db.Uuid
+  kind         String
+  status       JobStatus @default(PENDING)
+  payload      Json
+  result       Json?
+  errorMessage String?   @map("error_message")
+  attempts     Int       @default(0)
+  scheduledFor DateTime  @default(now()) @map("scheduled_for")
+  startedAt    DateTime? @map("started_at")
+  finishedAt   DateTime? @map("finished_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@index([status, scheduledFor])
+  @@map("processing_jobs")
+}

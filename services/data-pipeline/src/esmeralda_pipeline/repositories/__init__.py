@@ -1,0 +1,1 @@
+"""Acesso persistente aos dados."""
