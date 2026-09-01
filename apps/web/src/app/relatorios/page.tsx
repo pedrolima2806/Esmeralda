@@ -17,7 +17,7 @@ export default async function ReportsPage() {
         <p>Consulte análises recentes e acompanhe a evolução do cenário financeiro e econômico.</p>
       </header>
       {reports.length > 0 ? (
-        <div className="report-grid">{reports.map((report) => <ReportCard key={report.id} report={report} />)}</div>
+        <div className="report-grid">{reports.map((report, index) => <ReportCard key={report.id} report={report} index={index} />)}</div>
       ) : (
         <div className="empty-state"><h2>Nenhum relatório publicado ainda.</h2><p>As próximas análises aparecerão aqui.</p></div>
       )}
