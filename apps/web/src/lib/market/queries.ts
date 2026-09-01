@@ -26,6 +26,26 @@ type BrapiHistoryResponse = {
   }>;
 };
 
+type BrapiTickersResponse = {
+  requestedAt?: string;
+  results?: Array<{
+    symbol?: string;
+    name?: string | null;
+    assetType?: string | null;
+    exchange?: string | null;
+    currency?: string | null;
+    sector?: string | null;
+    subsector?: string | null;
+    isActive?: boolean | null;
+    quote?: {
+      lastPrice?: number | null;
+      changePercent?: number | null;
+      volume?: number | null;
+      marketCap?: number | null;
+    } | null;
+  }>;
+};
+
 export type MarketAsset = {
   symbol: string;
   name: string;
@@ -40,6 +60,25 @@ export type MarketSnapshot = {
   status: "available" | "unavailable";
   updatedAt: string | null;
   assets: MarketAsset[];
+};
+
+export type MarketCompany = {
+  symbol: string;
+  name: string;
+  exchange: string;
+  currency: string;
+  sector: string | null;
+  subsector: string | null;
+  price: number | null;
+  changePercent: number | null;
+  volume: number | null;
+  marketCap: number | null;
+};
+
+export type MarketCompanyCatalog = {
+  status: "available" | "unavailable";
+  updatedAt: string | null;
+  companies: MarketCompany[];
 };
 
 function buildHeaders() {
@@ -94,5 +133,43 @@ export async function getMarketSnapshot(): Promise<MarketSnapshot> {
     return { status: "available", updatedAt: quotes.requestedAt ?? new Date().toISOString(), assets };
   } catch {
     return { status: "unavailable", updatedAt: null, assets: [] };
+  }
+}
+
+export async function getMarketCompanies(): Promise<MarketCompanyCatalog> {
+  try {
+    const response = await fetch("https://brapi.dev/api/v2/tickers?type=stock&sortBy=volume&sortOrder=desc&page=1&limit=40", {
+      headers: buildHeaders(),
+      next: { revalidate: 300 },
+    });
+
+    if (!response.ok) throw new Error("Market catalog unavailable");
+
+    const payload = await response.json() as BrapiTickersResponse;
+    const companies = payload.results?.flatMap((result): MarketCompany[] => {
+      if (!result.symbol || result.assetType !== "stock" || result.isActive === false) return [];
+
+      return [{
+        symbol: result.symbol,
+        name: result.name?.trim() || result.symbol,
+        exchange: result.exchange || "B3",
+        currency: result.currency || "BRL",
+        sector: result.sector?.trim() || null,
+        subsector: result.subsector?.trim() || null,
+        price: typeof result.quote?.lastPrice === "number" ? result.quote.lastPrice : null,
+        changePercent: typeof result.quote?.changePercent === "number" ? result.quote.changePercent : null,
+        volume: typeof result.quote?.volume === "number" ? result.quote.volume : null,
+        marketCap: typeof result.quote?.marketCap === "number" ? result.quote.marketCap : null,
+      }];
+    }) ?? [];
+
+    if (!companies.length) throw new Error("Market catalog returned no companies");
+    return {
+      status: "available",
+      updatedAt: payload.requestedAt ?? new Date().toISOString(),
+      companies,
+    };
+  } catch {
+    return { status: "unavailable", updatedAt: null, companies: [] };
   }
 }

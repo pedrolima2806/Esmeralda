@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { MarketAsset, MarketSnapshot } from "@/lib/market/queries";
 
@@ -66,51 +67,51 @@ export function MarketOverview({ initialSnapshot }: { initialSnapshot: MarketSna
   }, []);
 
   return (
-    <section className="market-section" aria-labelledby="market-title">
-      <div className="page-container">
-        <header className="market-heading">
-          <div>
-            <p className="eyebrow"><span>02</span> Dados de mercado</p>
-            <h2 id="market-title">Pulso do mercado</h2>
-            <p>Cotações da B3 e a trajetória dos últimos pregões em uma leitura rápida.</p>
-          </div>
-          <div className={`market-status ${snapshot.status}`}>
-            <i aria-hidden="true" />
-            <span>{snapshot.status === "available" ? `Atualizado às ${formatUpdateTime(snapshot.updatedAt)}` : "Dados temporariamente indisponíveis"}</span>
-          </div>
-        </header>
+    <div className="market-panel" aria-labelledby="market-title">
+      <header className="dashboard-column-heading market-heading">
+        <div>
+          <p className="eyebrow"><span>03</span> B3 em tempo real</p>
+          <h2 id="market-title">Mercado Brasileiro</h2>
+        </div>
+        <div className={`market-status ${snapshot.status}`}>
+          <i aria-hidden="true" />
+          <span>{snapshot.status === "available" ? `Atualizado às ${formatUpdateTime(snapshot.updatedAt)}` : "Dados indisponíveis"}</span>
+        </div>
+      </header>
 
-        {snapshot.status === "available" ? (
-          <div className="market-grid">
-            {snapshot.assets.map((asset) => {
-              const positive = asset.changePercent >= 0;
-              return (
-                <article className="market-card" key={asset.symbol}>
-                  <header><div><span>{asset.symbol}</span><p>{asset.name}</p></div><b>B3</b></header>
-                  <div className="market-price-row">
-                    <strong>{formatPrice(asset)}</strong>
-                    <span className={positive ? "positive" : "negative"}>{positive ? "+" : ""}{asset.changePercent.toFixed(2).replace(".", ",")}%</span>
-                  </div>
-                  <Sparkline values={asset.history} positive={positive} symbol={asset.symbol} />
-                  <footer>Último mês · atualização automática</footer>
-                </article>
-              );
-            })}
+      {snapshot.status === "available" ? (
+        <div className="market-grid">
+          {snapshot.assets.map((asset) => {
+            const positive = asset.changePercent >= 0;
+            return (
+              <article className="market-card" key={asset.symbol}>
+                <header><div><span>{asset.symbol}</span><p>{asset.name}</p></div><b>B3</b></header>
+                <div className="market-price-row">
+                  <strong>{formatPrice(asset)}</strong>
+                  <span className={positive ? "positive" : "negative"}>{positive ? "+" : ""}{asset.changePercent.toFixed(2).replace(".", ",")}%</span>
+                </div>
+                <Sparkline values={asset.history} positive={positive} symbol={asset.symbol} />
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="market-unavailable">
+          <div className="market-unavailable-grid" aria-hidden="true">
+            {Array.from({ length: 4 }, (_, index) => <span key={index} />)}
           </div>
-        ) : (
-          <div className="market-unavailable">
-            <div className="market-unavailable-grid" aria-hidden="true">
-              {Array.from({ length: 4 }, (_, index) => <span key={index} />)}
-            </div>
-            <div><h3>Conexão de mercado em espera.</h3><p>O restante do site continua disponível enquanto tentamos uma nova atualização.</p></div>
-          </div>
-        )}
+          <div><h3>Conexão de mercado em espera.</h3><p>O restante do site continua disponível enquanto tentamos uma nova atualização.</p></div>
+        </div>
+      )}
 
-        <footer className="market-disclaimer">
-          <span>Fonte: <a href="https://brapi.dev" target="_blank" rel="noreferrer">brapi.dev ↗</a></span>
-          <span>Cotações podem ter atraso. Conteúdo informativo, não constitui recomendação.</span>
-        </footer>
+      <div className="market-grid-footer">
+        <Link className="market-more-link" href="/mercado">Ver mais empresas <span aria-hidden="true">→</span></Link>
+        <span>Histórico mensal · atualização automática</span>
       </div>
-    </section>
+      <footer className="market-disclaimer">
+        <span>Fonte: <a href="https://brapi.dev" target="_blank" rel="noreferrer">brapi.dev ↗</a></span>
+        <span>Cotações podem ter atraso. Conteúdo informativo, não constitui recomendação.</span>
+      </footer>
+    </div>
   );
 }

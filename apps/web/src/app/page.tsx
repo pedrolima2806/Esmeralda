@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MacroeconomicOverview } from "@/components/market/macroeconomic-overview";
 import { MarketOverview } from "@/components/market/market-overview";
 import { ReportCard } from "@/components/reports/report-card";
+import { getMacroeconomicSnapshot } from "@/lib/market/macroeconomics";
 import { getMarketSnapshot } from "@/lib/market/queries";
 import { listPublishedReports } from "@/lib/reports/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [reports, marketSnapshot] = await Promise.all([
+  const [reports, macroeconomicSnapshot, marketSnapshot] = await Promise.all([
     listPublishedReports(3),
+    getMacroeconomicSnapshot(),
     getMarketSnapshot(),
   ]);
 
@@ -51,7 +54,12 @@ export default async function HomePage() {
         )}
       </section>
 
-      <MarketOverview initialSnapshot={marketSnapshot} />
+      <section className="market-dashboard-section" id="mercado" aria-label="Indicadores econômicos e de mercado">
+        <div className="page-container market-dashboard-grid">
+          <MacroeconomicOverview snapshot={macroeconomicSnapshot} />
+          <MarketOverview initialSnapshot={marketSnapshot} />
+        </div>
+      </section>
     </main>
   );
 }
