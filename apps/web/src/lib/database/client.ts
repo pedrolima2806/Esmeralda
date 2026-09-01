@@ -1,4 +1,9 @@
 import { PrismaClient } from "@esmeralda/database";
+import { resolve } from "node:path";
+
+if (!process.env.DATABASE_URL) {
+  process.loadEnvFile(resolve(process.cwd(), "../../.env"));
+}
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
