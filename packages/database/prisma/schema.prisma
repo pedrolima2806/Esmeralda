@@ -82,17 +82,36 @@ model Observation {
 }
 
 model Report {
-  id          String          @id @default(uuid()) @db.Uuid
-  slug        String          @unique
-  title       String
-  summary     String?
-  status      ReportStatus    @default(DRAFT)
-  publishedAt DateTime?       @map("published_at")
-  createdAt   DateTime        @default(now()) @map("created_at")
-  updatedAt   DateTime        @updatedAt @map("updated_at")
-  sections    ReportSection[]
+  id            String          @id @default(uuid()) @db.Uuid
+  slug          String          @unique
+  title         String
+  summary       String?
+  category      String?
+  author        String?
+  coverImageUrl String?         @map("cover_image_url")
+  tags           String[]        @default([])
+  referenceDate DateTime?       @map("reference_date") @db.Date
+  status         ReportStatus    @default(DRAFT)
+  publishedAt   DateTime?       @map("published_at")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  sections      ReportSection[]
+  sources       ReportSource[]
 
   @@map("reports")
+}
+
+model ReportSource {
+  id        String   @id @default(uuid()) @db.Uuid
+  reportId  String   @map("report_id") @db.Uuid
+  position  Int
+  title     String
+  url       String
+  createdAt DateTime @default(now()) @map("created_at")
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@unique([reportId, position])
+  @@map("report_sources")
 }
 
 model ReportSection {

@@ -3,6 +3,10 @@ import { PrismaClient } from "@prisma/client";
 const database = new PrismaClient();
 
 const slug = "panorama-semanal-demonstracao";
+const sources = [
+  { position: 1, title: "Banco Central do Brasil — Estatísticas", url: "https://www.bcb.gov.br/estatisticas" },
+  { position: 2, title: "IBGE — Indicadores econômicos", url: "https://www.ibge.gov.br/indicadores.html" },
+];
 const sections = [
   {
     position: 1,
@@ -63,20 +67,35 @@ async function main() {
     update: {
       title: "Panorama semanal: sinais, riscos e próximos movimentos",
       summary: "Relatório demonstrativo para visualizar a experiência pública de análise da Esmeralda.",
+      category: "Panorama semanal",
+      author: "Equipe Esmeralda",
+      coverImageUrl: "/images/emerald-stone-hero.png",
+      tags: ["mercados", "macroeconomia", "cenário"],
+      referenceDate: new Date("2026-08-31T00:00:00.000Z"),
       status: "PUBLISHED",
       publishedAt: new Date(),
       sections: {
         deleteMany: {},
         create: sections,
       },
+      sources: {
+        deleteMany: {},
+        create: sources,
+      },
     },
     create: {
       slug,
       title: "Panorama semanal: sinais, riscos e próximos movimentos",
       summary: "Relatório demonstrativo para visualizar a experiência pública de análise da Esmeralda.",
+      category: "Panorama semanal",
+      author: "Equipe Esmeralda",
+      coverImageUrl: "/images/emerald-stone-hero.png",
+      tags: ["mercados", "macroeconomia", "cenário"],
+      referenceDate: new Date("2026-08-31T00:00:00.000Z"),
       status: "PUBLISHED",
       publishedAt: new Date(),
       sections: { create: sections },
+      sources: { create: sources },
     },
   });
 

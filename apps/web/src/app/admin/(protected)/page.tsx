@@ -24,7 +24,10 @@ export default async function AdminPage() {
         {reports.length ? reports.map((report) => (
           <article className="admin-report-row" key={report.id}>
             <div className={`status-dot ${report.status.toLowerCase()}`} aria-hidden="true" />
-            <div><h3>{report.title}</h3><p>Atualizado em {formatReportDate(report.updatedAt)}</p></div>
+            <div>
+              <h3>{report.title}</h3>
+              <p>{report.category ? `${report.category} · ` : ""}Atualizado em {formatReportDate(report.updatedAt)}</p>
+            </div>
             <span className={`status-badge ${report.status.toLowerCase()}`}>{statusLabel[report.status]}</span>
             <div className="admin-row-actions">
               {report.status === "PUBLISHED" ? <Link href={`/relatorios/${report.slug}`} target="_blank">Visualizar ↗</Link> : null}

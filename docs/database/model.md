@@ -4,7 +4,8 @@
 - `economic_indicators`: catálogo semântico dos indicadores.
 - `time_series`: séries disponibilizadas por uma fonte.
 - `observations`: valores históricos, preservando revisões.
-- `reports` e `report_sections`: conteúdo editorial estruturado.
+- `reports`, `report_sections` e `report_sources`: metadados, conteúdo editorial
+  estruturado e referências utilizadas em cada publicação.
 - `collection_runs`: auditoria de coletas.
 - `processing_jobs`: fila persistente para trabalhos assíncronos futuros.
 
@@ -25,5 +26,10 @@ públicas reconhecem inicialmente quatro formatos:
 ]
 ```
 
-Essa estrutura mantém o conteúdo independente da apresentação visual e poderá ser
-produzida futuramente pelo editor da área administrativa.
+Essa estrutura mantém o conteúdo independente da apresentação visual e é produzida
+pelo editor da área administrativa.
+
+Além das seções, cada relatório pode armazenar categoria, autor, imagem de capa,
+tags, data de referência e uma lista ordenada de fontes com título e URL. As tags
+permanecem no próprio registro do relatório; as fontes usam `report_sources` para
+permitir múltiplas referências e preservar sua ordem de apresentação.

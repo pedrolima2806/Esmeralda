@@ -2,7 +2,16 @@ import type { Prisma } from "@esmeralda/database";
 import { database } from "@/lib/database/client";
 
 const publishedReportSummary = {
-  id: true, slug: true, title: true, summary: true, publishedAt: true,
+  id: true,
+  slug: true,
+  title: true,
+  summary: true,
+  category: true,
+  author: true,
+  coverImageUrl: true,
+  tags: true,
+  referenceDate: true,
+  publishedAt: true,
 } satisfies Prisma.ReportSelect;
 
 export type PublishedReportSummary = {
@@ -10,6 +19,11 @@ export type PublishedReportSummary = {
   slug: string;
   title: string;
   summary: string | null;
+  category: string | null;
+  author: string | null;
+  coverImageUrl: string | null;
+  tags: string[];
+  referenceDate: Date | null;
   publishedAt: Date;
 };
 
@@ -26,6 +40,9 @@ export async function listPublishedReports(limit?: number): Promise<PublishedRep
 export function findPublishedReport(slug: string) {
   return database.report.findFirst({
     where: { slug, status: "PUBLISHED", publishedAt: { not: null, lte: new Date() } },
-    include: { sections: { orderBy: { position: "asc" } } },
+    include: {
+      sections: { orderBy: { position: "asc" } },
+      sources: { orderBy: { position: "asc" } },
+    },
   });
 }

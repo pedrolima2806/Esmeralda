@@ -1,12 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MarketOverview } from "@/components/market/market-overview";
 import { ReportCard } from "@/components/reports/report-card";
+import { getMarketSnapshot } from "@/lib/market/queries";
 import { listPublishedReports } from "@/lib/reports/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const reports = await listPublishedReports(3);
+  const [reports, marketSnapshot] = await Promise.all([
+    listPublishedReports(3),
+    getMarketSnapshot(),
+  ]);
 
   return (
     <main>
@@ -34,7 +39,7 @@ export default async function HomePage() {
           {reports.length > 0 ? <Link href="/relatorios">Ver todos</Link> : null}
         </div>
         {reports.length > 0 ? (
-          <div className="report-grid">
+          <div className="report-grid home-report-grid">
             {reports.map((report, index) => <ReportCard key={report.id} report={report} index={index} />)}
           </div>
         ) : (
@@ -45,6 +50,8 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      <MarketOverview initialSnapshot={marketSnapshot} />
     </main>
   );
 }

@@ -10,7 +10,10 @@ export default async function EditReportPage({ params, searchParams }: {
 }) {
   const report = await database.report.findUnique({
     where: { id: (await params).id },
-    include: { sections: { orderBy: { position: "asc" } } },
+    include: {
+      sections: { orderBy: { position: "asc" } },
+      sources: { orderBy: { position: "asc" } },
+    },
   });
   if (!report) notFound();
   const query = await searchParams;
@@ -33,8 +36,16 @@ export default async function EditReportPage({ params, searchParams }: {
         title: report.title,
         slug: report.slug,
         summary: report.summary ?? "",
+        category: report.category ?? "",
+        author: report.author ?? "",
+        coverImageUrl: report.coverImageUrl ?? "",
+        tags: report.tags.join(", "),
+        referenceDate: report.referenceDate
+          ? report.referenceDate.toISOString().slice(0, 10).split("-").reverse().join("/")
+          : "",
         status: report.status,
         sections: report.sections.map((section) => ({ title: section.title ?? "", body: contentToText(section.content) })),
+        sources: report.sources.map((source) => ({ title: source.title, url: source.url })),
       }} />
     </main>
   );
