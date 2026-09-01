@@ -13,6 +13,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "db:generate": "npm run generate --workspace=@esmeralda/database",
     "db:migrate": "npm run migrate:dev --workspace=@esmeralda/database",
+    "db:seed": "npm run seed --workspace=@esmeralda/database",
     "db:studio": "npm run studio --workspace=@esmeralda/database"
   },
   "engines": {

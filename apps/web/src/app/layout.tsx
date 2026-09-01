@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Cinzel, Ubuntu, Ubuntu_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
-const inter = Inter({
+const ubuntu = Ubuntu({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "700"],
+  variable: "--font-ubuntu",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const ubuntuMono = Ubuntu_Mono({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  weight: ["400", "700"],
+  variable: "--font-ubuntu-mono",
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: "500",
+  variable: "--font-cinzel",
 });
 
 export const metadata: Metadata = {
@@ -21,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="pt-BR" className={`${ubuntu.variable} ${ubuntuMono.variable} ${cinzel.variable}`}>
       <body><SiteHeader />{children}</body>
     </html>
   );
