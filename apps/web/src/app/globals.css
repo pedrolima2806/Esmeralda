@@ -54,9 +54,10 @@ h1 em { color: var(--accent); font-style: normal; font-weight: 400; }
 .primary-link { display: inline-flex; gap: 2.4rem; align-items: center; padding: 0.95rem 1.25rem; border: 1px solid rgba(59, 212, 127, 0.5); border-radius: 8px; background: var(--accent); color: #102217; font-family: var(--font-ubuntu); font-size: 0.78rem; font-weight: 700; text-decoration: none; transition: background 160ms, transform 160ms; }
 .primary-link:hover { background: var(--accent-hover); transform: translateY(-1px); }
 
-.reports-section { padding-block: 7rem 8rem; border-top: 1px solid var(--line); }
+.reports-section { padding-block: 7rem 3rem; border-top: 1px solid var(--line); }
 .section-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 2.5rem; }
-.section-heading h2, .page-intro h1 { margin: 0; font-family: var(--font-ubuntu), sans-serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 500; letter-spacing: -0.04em; }
+.section-heading h2 { margin: 0; font-family: var(--font-ubuntu), sans-serif; font-size: clamp(2.2rem, 3.5vw, 3.4rem); font-weight: 500; letter-spacing: -0.04em; }
+.page-intro h1 { margin: 0; font-family: var(--font-ubuntu), sans-serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 500; letter-spacing: -0.04em; }
 .section-heading > a { color: var(--muted); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .report-card-link { display: block; height: 100%; outline: none; text-decoration: none; }
@@ -77,12 +78,12 @@ h1 em { color: var(--accent); font-style: normal; font-weight: 400; }
 .empty-state h2, .empty-state h3 { position: relative; z-index: 1; margin: 0 0 0.8rem; font-family: var(--font-ubuntu), sans-serif; font-size: 2rem; font-weight: 500; letter-spacing: -0.03em; }
 .empty-state p:last-child { position: relative; z-index: 1; margin-bottom: 0; color: var(--muted); }
 
-.market-dashboard-section { padding-block: 5.5rem 7rem; border-top: 1px solid var(--line); background: rgba(26, 21, 28, 0.26); }
+.market-dashboard-section { padding-block: 3rem 7rem; background: transparent; }
 .market-dashboard-grid { display: grid; grid-template-columns: minmax(350px, 0.8fr) minmax(0, 1.4fr); align-items: stretch; gap: 1.5rem; }
 .macro-panel, .market-panel { min-width: 0; display: flex; flex-direction: column; }
 .dashboard-column-heading { min-height: 102px; display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
 .dashboard-column-heading .eyebrow { margin-bottom: 0.85rem; }
-.dashboard-column-heading h2 { margin: 0; font-family: var(--font-ubuntu); font-size: clamp(2rem, 3vw, 3rem); font-weight: 500; letter-spacing: -0.04em; }
+.dashboard-column-heading h2 { margin: 0; font-family: var(--font-ubuntu); font-size: clamp(2.2rem, 3.5vw, 3.4rem); font-weight: 500; letter-spacing: -0.04em; }
 .macro-status { display: flex; flex: 0 0 auto; align-items: center; gap: 0.6rem; padding: 0.65rem 0.8rem; border: 1px solid var(--line); border-radius: 999px; color: #87968e; font-family: var(--font-mono); font-size: 0.61rem; letter-spacing: 0.05em; text-transform: uppercase; }
 .macro-status i { width: 7px; height: 7px; border-radius: 50%; background: #8d7777; }
 .macro-status.available i { background: var(--accent); box-shadow: 0 0 10px rgba(59, 212, 127, 0.7); }
@@ -320,8 +321,8 @@ h1 em { color: var(--accent); font-style: normal; font-weight: 400; }
   .hero-copy { padding-block: 5rem; }
   .section-heading { align-items: start; gap: 1.5rem; flex-direction: column; }
   .empty-state { padding: 2rem; }
-  .reports-section { padding-block: 5rem; }
-  .market-dashboard-section { padding-block: 5rem; }
+  .reports-section { padding-block: 5rem 2.5rem; }
+  .market-dashboard-section { padding-block: 2.5rem 5rem; }
   .dashboard-column-heading { align-items: start; flex-direction: column; }
   .macro-grid { grid-template-columns: 1fr; }
   .macro-card-content { grid-template-columns: minmax(0, 1fr) minmax(100px, 0.8fr); }
