@@ -50,7 +50,7 @@ export function MacroeconomicOverview({ snapshot }: { snapshot: MacroeconomicSna
         <div className="macro-grid">
           {snapshot.indicators.map((indicator) => (
             <article className="macro-card" key={indicator.key}>
-              <div className="macro-card-content">
+              <div className={`macro-card-content ${indicator.key === "selic" ? "without-chart" : ""}`}>
                 <div>
                   <header>
                     <span>{indicator.label}</span>
@@ -61,7 +61,7 @@ export function MacroeconomicOverview({ snapshot }: { snapshot: MacroeconomicSna
                     <span>%</span>
                   </div>
                 </div>
-                {indicator.key !== "ipca-monthly" ? (
+                {indicator.key !== "selic" ? (
                   <MacroSparkline values={indicator.history.map((point) => point.value)} label={indicator.label} />
                 ) : null}
               </div>

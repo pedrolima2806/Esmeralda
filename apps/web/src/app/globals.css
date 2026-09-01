@@ -67,7 +67,7 @@ h1 em { color: var(--accent); font-style: normal; font-weight: 400; }
 .report-card-cover { width: calc(100% + 4rem); aspect-ratio: 16 / 8; margin: -2rem -2rem 1.5rem; border-bottom: 1px solid var(--line); border-radius: 13px 13px 0 0; background-color: #201a22; background-position: center; background-size: cover; }
 .card-meta { width: 100%; display: flex; justify-content: space-between; }
 .card-meta span, .report-card time, .article-header time { color: var(--accent); font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.07em; text-transform: uppercase; }
-.card-meta span { color: #516159; }
+.card-meta span { color: #9caaa2; font-size: 0.7rem; font-weight: 700; }
 .report-card h3 { margin: 1.5rem 0 1rem; font-family: var(--font-ubuntu), sans-serif; font-size: 1.65rem; font-weight: 500; letter-spacing: -0.02em; line-height: 1.18; }
 .report-card p { margin: 0 0 2rem; color: var(--muted); font-size: 0.92rem; line-height: 1.65; }
 .report-card-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: -0.5rem 0 1.5rem; }
@@ -91,6 +91,7 @@ h1 em { color: var(--accent); font-style: normal; font-weight: 400; }
 .macro-grid { display: grid; flex: 1; grid-template-columns: 1fr; grid-auto-rows: minmax(0, 1fr); gap: 1rem; }
 .macro-card { min-height: 186px; display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg, rgba(55, 48, 58, 0.92), rgba(37, 32, 40, 0.96)); box-shadow: 0 8px 28px rgba(12, 6, 14, 0.16); overflow: hidden; }
 .macro-card-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(100px, 0.8fr); align-items: end; gap: 1rem; }
+.macro-card-content.without-chart { grid-template-columns: 1fr; }
 .macro-card header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .macro-card header span { color: var(--text); font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .macro-card header b { padding: 0.25rem 0.4rem; border: 1px solid rgba(59, 212, 127, 0.2); border-radius: 5px; color: var(--accent); font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.08em; }
@@ -101,7 +102,7 @@ h1 em { color: var(--accent); font-style: normal; font-weight: 400; }
 .macro-chart line { stroke: rgba(255, 255, 255, 0.07); stroke-width: 1; }
 .macro-chart polyline { stroke: var(--accent); stroke-width: 2; filter: drop-shadow(0 0 5px rgba(59, 212, 127, 0.3)); }
 .macro-card > p { margin: 0.9rem 0 1rem; color: #8f9d95; font-size: 0.72rem; line-height: 1.45; }
-.macro-card footer { margin-top: auto; padding-top: 0.85rem; border-top: 1px solid var(--line); color: #68776f; font-family: var(--font-mono); font-size: 0.57rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.macro-card footer { margin-top: auto; padding-top: 0.85rem; border-top: 1px solid var(--line); color: #9caaa2; font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
 .macro-source { margin-top: 1.2rem; color: #69776f; font-family: var(--font-mono); font-size: 0.57rem; letter-spacing: 0.03em; text-align: right; }
 .macro-source a { color: #95a69d; text-underline-offset: 0.2rem; }
 .macro-unavailable { padding: 3rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
